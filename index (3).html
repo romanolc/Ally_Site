@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALLY — Tecnologia com Empatia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav" role="navigation" aria-label="Navegação principal">
+  <a href="#" class="nav-logo" aria-label="ALLY - Página inicial">
+    <div class="nav-logo-icon" aria-hidden="true">A</div>
+    <span class="nav-logo-text">ALLY</span>
+  </a>
+  
+  <div class="nav-right">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#sobre" data-i18n="nav_sobre">Sobre</a></li>
+      <li><a href="#funciona" data-i18n="nav_funciona">Como Funciona</a></li>
+      <li><a href="#simulador" data-i18n="nav_simulador">Simulador</a></li>
+      <li><a href="#impacto" data-i18n="nav_impacto">Impacto</a></li>
+      <li><a href="#parcerias" data-i18n="nav_parcerias">Parcerias</a></li>
+      <li><a href="#contato" class="nav-cta" data-i18n="nav_contato">Fale Conosco</a></li>
+    </ul>
+
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLanguage('pt')">PT</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio" aria-label="Seção principal">
+  <div class="hero-bg-circles" aria-hidden="true">
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-i18n="hero_badge">Tecnologia Assistiva · MVP em Desenvolvimento</span>
+      </div>
+      <h1 class="hero-title" data-i18n="hero_title">
+        Tornando a<br>tecnologia um<br>instrumento de<br><em>empatia</em>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">
+        ALLY é uma solução integrada de geolocalização e monitoramento em tempo real para pessoas com deficiência, idosos com demência e pessoas vulneráveis — promovendo autonomia, segurança e tranquilidade familiar.
+      </p>
+      <div class="hero-actions">
+        <a href="#sobre" class="btn-primary" aria-label="Conhecer o projeto ALLY" data-i18n="btn_conheca">
+          ● Conheça o Projeto
+        </a>
+        <a href="#simulador" class="btn-secondary" aria-label="Ver simulação do mapa" data-i18n="btn_simulacao">
+          ▶ Ver Simulação
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="float-card float-card-1">
+        <span class="float-card-icon">📍</span>
+        Localização em tempo real
+      </div>
+      <div class="hero-map-card">
+        <div class="map-header">
+          <span class="map-title">📡 Monitoramento ALLY</span>
+          <div class="map-live"><span></span> AO VIVO</div>
+        </div>
+        <div id="hero-mini-map"></div>
+        <div class="map-footer">
+          <div class="map-stat">
+            <div class="map-stat-val">🟢</div>
+            <div class="map-stat-label">Área Segura</div>
+          </div>
+          <div class="map-stat">
+            <div class="map-stat-val">98%</div>
+            <div class="map-stat-label">Bateria</div>
+          </div>
+          <div class="map-stat">
+            <div class="map-stat-val">2s</div>
+            <div class="map-stat-label">Atualização</div>
+          </div>
+        </div>
+      </div>
+      <div class="float-card float-card-2">
+        <span class="float-card-icon">🚨</span>
+        SOS Ativado → Alerta
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats container" aria-label="Estatísticas principais">
+    <div class="hero-stat">
+      <div class="hero-stat-num">80<span>k+</span></div>
+      <div class="hero-stat-label" data-i18n="hero_stat_1">pessoas desaparecidas por ano no Brasil (2023)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">14<span>.4M</span></div>
+      <div class="hero-stat-label" data-i18n="hero_stat_2">pessoas com deficiência no Brasil (IBGE 2022)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">2<span>B</span></div>
+      <div class="hero-stat-label" data-i18n="hero_stat_3">pessoas precisarão de tecnologia assistiva até 2030 (OMS)</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre" aria-labelledby="sobre-title">
+  <div class="container">
+    <div class="sobre-grid">
+      <div>
+        <span class="section-tag reveal" data-i18n="sobre_tag">📊 O Problema</span>
+        <h2 class="section-title reveal" id="sobre-title" data-i18n="sobre_title">Uma realidade que<br>exige uma solução</h2>
+        <p class="section-sub reveal" data-i18n="sobre_sub">
+          O desaparecimento de pessoas vulneráveis é uma crise silenciosa no Brasil. Pessoas com Alzheimer, autismo e outras condições enfrentam riscos elevados de desorientação — e a tecnologia pode mudar isso.
+        </p>
+        <div class="stat-cards" style="margin-top: 40px;">
+          <div class="stat-card reveal reveal-delay-1" tabindex="0">
+            <div class="stat-card-icon">🧠</div>
+            <div class="stat-card-num">1<span class="stat-card-unit">.2M</span></div>
+            <div class="stat-card-label" data-i18n="stat_alzheimer">pessoas com Alzheimer no Brasil</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-card-icon">🧩</div>
+            <div class="stat-card-num">2<span class="stat-card-unit">.4M</span></div>
+            <div class="stat-card-label" data-i18n="stat_tea">pessoas no espectro autista (TEA)</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-3" tabindex="0">
+            <div class="stat-card-icon">📅</div>
+            <div class="stat-card-num">183</div>
+            <div class="stat-card-label" data-i18n="stat_desaparecidos">desaparecimentos registrados por dia no Brasil</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-4" tabindex="0">
+            <div class="stat-card-icon">🏥</div>
+            <div class="stat-card-num">66<span class="stat-card-unit">%</span></div>
+            <div class="stat-card-label" data-i18n="stat_renda">da renda familiar comprometida com cuidados de demência</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sobre-visual">
+        <div class="data-chart-card reveal">
+          <h4 data-i18n="chart_title">📈 Registros de desaparecidos no Brasil por ano</h4>
+          <div class="bar-chart" id="bar-chart">
+            <div class="bar-row"><span class="bar-year">2007</span><div class="bar-track"><div class="bar-fill" data-width="46">43.021</div></div></div>
+            <div class="bar-row"><span class="bar-year">2009</span><div class="bar-track"><div class="bar-fill" data-width="53">49.983</div></div></div>
+            <div class="bar-row"><span class="bar-year">2011</span><div class="bar-track"><div class="bar-fill" data-width="72">67.308</div></div></div>
+            <div class="bar-row"><span class="bar-year">2012</span><div class="bar-track"><div class="bar-fill" data-width="94">88.618</div></div></div>
+            <div class="bar-row"><span class="bar-year">2014</span><div class="bar-track"><div class="bar-fill" data-width="100">94.101</div></div></div>
+            <div class="bar-row"><span class="bar-year">2023</span><div class="bar-track"><div class="bar-fill teal" data-width="85">80.000+</div></div></div>
+          </div>
+        </div>
+        <div class="pie-card reveal">
+          <h4 data-i18n="pie_title">Proporção de pessoas com deficiência por gênero</h4>
+          <div class="pie-visual">
+            <svg class="pie-svg" width="100" height="100" viewBox="0 0 36 36" aria-label="Gráfico de pizza: 63% masculino, 37% feminino">
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e4eaf4" stroke-width="3.8"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3a7bd5" stroke-width="3.8"
+                stroke-dasharray="39.6 100" stroke-dashoffset="25" transform="rotate(-90 18 18)"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f0b429" stroke-width="3.8"
+                stroke-dasharray="23.3 100" stroke-dashoffset="-14.6" transform="rotate(-90 18 18)"/>
+            </svg>
+            <div class="pie-legend">
+              <div class="pie-leg-item"><div class="pie-dot" style="background:#3a7bd5"></div><span data-i18n="pie_masc">Masculino — 63%</span></div>
+              <div class="pie-leg-item"><div class="pie-dot" style="background:#f0b429"></div><span data-i18n="pie_fem">Feminino — 37%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="margin-top: 16px; padding: 20px 24px; background: linear-gradient(135deg,rgba(58,123,213,0.08),rgba(77,184,164,0.08)); border-radius: 16px; border: 1px solid rgba(58,123,213,0.15);">
+          <p style="font-size: 14px; color: var(--gray-600); line-height: 1.7;" data-i18n="dado_critico">
+            <strong style="color: var(--navy);">Dado crítico:</strong> Apenas <strong>6,9%</strong> dos municípios brasileiros possuem acessibilidade universal plena, e menos de <strong>3%</strong> dos sites são acessíveis para pessoas com deficiência. (FGV / BigData Corp)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="funciona" aria-labelledby="funciona-title">
+  <div class="container">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+      <span class="section-tag reveal" data-i18n="funciona_tag">⚙️ A Solução</span>
+      <h2 class="section-title reveal" id="funciona-title" data-i18n="funciona_title">Como o ALLY<br>funciona</h2>
+      <p class="section-sub reveal" style="margin: 0 auto;" data-i18n="funciona_sub">
+        Uma solução integrada de hardware e software: um dispositivo discreto conectado a um aplicativo inteligente, operando em tempo real via chip de operadora.
+      </p>
+    </div>
+
+    <div class="steps-flow">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-icon">⌚<div class="step-num">1</div></div>
+        <h3 data-i18n="step_1_title">Dispositivo ALLY</h3>
+        <p data-i18n="step_1_desc">Pulseira ou botão discreto com GPS integrado, microcontrolador de baixo consumo e chip GSM/4G. Design inclusivo e não estigmatizante.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-icon">📱<div class="step-num">2</div></div>
+        <h3 data-i18n="step_2_title">Aplicativo Móvel</h3>
+        <p data-i18n="step_2_desc">Interface visual com Google Maps integrado. Circuitos personalizados para famílias, cuidadores e profissionais de saúde.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-icon">☁️<div class="step-num">3</div></div>
+        <h3 data-i18n="step_3_title">Servidor em Nuvem</h3>
+        <p data-i18n="step_3_desc">Infraestrutura escalável (AWS/Google Cloud) com processamento de dados GPS em tempo real e sistema de alertas inteligentes.</p>
+      </div>
+      <div class="step reveal reveal-delay-4">
+        <div class="step-icon">🔔<div class="step-num">4</div></div>
+        <h3 data-i18n="step_4_title">Alertas & Geofencing</h3>
+        <p data-i18n="step_4_desc">Notificações automáticas quando o usuário sai de zonas seguras. SOS físico integrado ao app com feedback sonoro e visual.</p>
+      </div>
+    </div>
+
+    <div class="integration-card reveal">
+      <div class="int-block">
+        <div class="int-icon red">🆘</div>
+        <h4 data-i18n="int_sos">Botão SOS Físico</h4>
+        <p data-i18n="int_sos_desc">Pulseira / Chaveiro<br>Pressione para alertar</p>
+      </div>
+      <div class="int-block">
+        <div class="int-icon blue">📡</div>
+        <h4 data-i18n="int_sinal">Envio do Sinal</h4>
+        <p data-i18n="int_sinal_desc">Bluetooth (10m)<br>ou Chip GSM/4G</p>
+      </div>
+      <div class="int-block">
+        <div class="int-icon sky">📲</div>
+        <h4 data-i18n="int_app">App ALLY</h4>
+        <p data-i18n="int_app_desc">Criação do alerta<br>GPS automático</p>
+      </div>
+      <div class="int-block">
+        <div class="int-icon green">🔊</div>
+        <h4 data-i18n="int_feedback">Feedback Completo</h4>
+        <p data-i18n="int_feedback_desc">Som + vibração<br>Interface vermelha</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATUS SYSTEM -->
+<section id="status" aria-labelledby="status-title">
+  <div class="container">
+    <div style="text-align: center; max-width: 560px; margin: 0 auto;">
+      <span class="section-tag reveal" data-i18n="status_tag">🎨 Interface</span>
+      <h2 class="section-title reveal" id="status-title" data-i18n="status_title">Sistema de cores<br>& status em tempo real</h2>
+      <p class="section-sub reveal" style="margin: 0 auto;" data-i18n="status_sub">
+        Uma linguagem visual universal que permite cuidadores e familiares entenderem o status instantaneamente.
+      </p>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-card green reveal">
+        <div class="status-indicator" aria-label="Status verde - área segura">🟢</div>
+        <div class="status-info">
+          <h3 data-i18n="status_safe">Área Segura</h3>
+          <p data-i18n="status_safe_desc">O usuário está dentro de uma zona configurada como segura. Tudo em ordem, monitoramento ativo.</p>
+        </div>
+        <span class="status-badge">VERDE</span>
+      </div>
+      <div class="status-card yellow reveal reveal-delay-1">
+        <div class="status-indicator" aria-label="Status amarelo - em deslocamento">🟡</div>
+        <div class="status-info">
+          <h3 data-i18n="status_moving">Em Deslocamento</h3>
+          <p data-i18n="status_moving_desc">Usuário em movimento entre pontos. Rastreamento contínuo ativado, notificação ao chegar ao destino.</p>
+        </div>
+        <span class="status-badge">AMARELO</span>
+      </div>
+      <div class="status-card red reveal reveal-delay-2">
+        <div class="status-indicator" aria-label="Status vermelho - área de risco">🔴</div>
+        <div class="status-info">
+          <h3 data-i18n="status_risk">Área de Risco</h3>
+          <p data-i18n="status_risk_desc">Usuário em zona marcada como perigosa. Alerta sonoro e visual acionado automaticamente no app.</p>
+        </div>
+        <span class="status-badge">VERMELHO</span>
+      </div>
+      <div class="status-card alert reveal reveal-delay-3">
+        <div class="status-indicator" aria-label="Status de alerta - fora da rota segura">🚨</div>
+        <div class="status-info">
+          <h3 data-i18n="status_alert">Fora da Rota Segura</h3>
+          <p data-i18n="status_alert_desc">Usuário saiu da rota ou perímetro configurado. Todos os mentores do circuito são alertados imediatamente.</p>
+        </div>
+        <span class="status-badge">ALERTA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULADOR -->
+<section id="simulador" aria-labelledby="simulador-title">
+  <div class="container">
+    <span class="section-tag reveal" data-i18n="sim_tag">🗺️ Simulação</span>
+    <h2 class="section-title reveal" id="simulador-title" data-i18n="sim_title">Simulador de<br>monitoramento em Lauro de Freitas</h2>
+    <p class="section-sub reveal" data-i18n="sim_sub">Veja como o sistema ALLY funciona na prática. O mapa abaixo simula monitoramento em tempo real com zonas seguras, rotas e alertas dinâmicos.</p>
+
+    <div class="simulator-wrap reveal">
+      <div class="sim-header">
+        <div class="sim-header-left">
+          <div class="sim-dot-group" aria-hidden="true">
+            <div class="sim-dot red"></div>
+            <div class="sim-dot yellow"></div>
+            <div class="sim-dot green"></div>
+          </div>
+          <span class="sim-title">ALLY Monitor · Lauro de Freitas, BA</span>
+        </div>
+        <div class="sim-status-bar">
+          <div class="dot"></div>
+          Monitoramento Ativo
+        </div>
+      </div>
+      <div id="ally-map" role="application" aria-label="Mapa simulado de monitoramento ALLY em Lauro de Freitas"></div>
+      <div class="sim-footer">
+        <div class="sim-ctrl"><div class="sim-ctrl-dot" style="background:#22c55e;"></div> Zona Segura</div>
+        <div class="sim-ctrl"><div class="sim-ctrl-dot" style="background:#ef4444;"></div> Zona de Risco</div>
+        <div class="sim-ctrl"><div class="sim-ctrl-dot" style="background:#3a7bd5;"></div> Usuário ALLY</div>
+        <div class="sim-ctrl">📍 Pontos de referência</div>
+        <button class="sim-btn" id="sim-btn" aria-label="Iniciar simulação de movimento" data-i18n="sim_btn_start">▶ Iniciar Simulação</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACESSIBILIDADE -->
+<section id="acessibilidade" aria-labelledby="acessib-title">
+  <div class="container">
+    <div style="text-align: center; max-width: 540px; margin: 0 auto;">
+      <span class="section-tag reveal" data-i18n="access_tag">♿ Acessibilidade</span>
+      <h2 class="section-title reveal" id="acessib-title" data-i18n="access_title">Inclusão<br>em cada detalhe</h2>
+      <p class="section-sub reveal" style="margin: 0 auto;" data-i18n="access_sub">
+        Projetado desde o início para pessoas com deficiência, seguindo as diretrizes WCAG e princípios de design inclusivo.
+      </p>
+    </div>
+    <div class="access-grid">
+      <div class="access-card reveal">
+        <span class="access-icon">👁️</span>
+        <h3 data-i18n="access_1_title">Alto Contraste</h3>
+        <p data-i18n="access_1_desc">Interface com paleta acessível e relações de contraste acima do mínimo recomendado pelas diretrizes WCAG 2.1.</p>
+      </div>
+      <div class="access-card reveal reveal-delay-1">
+        <span class="access-icon">⌨️</span>
+        <h3 data-i18n="access_2_title">Navegação por Teclado</h3>
+        <p data-i18n="access_2_desc">Todos os elementos interativos são acessíveis via teclado, com indicadores de foco visíveis e lógicos.</p>
+      </div>
+      <div class="access-card reveal reveal-delay-2">
+        <span class="access-icon">🔊</span>
+        <h3 data-i18n="access_3_title">Leitores de Tela</h3>
+        <p data-i18n="access_3_desc">Uso completo de aria-labels, roles semânticos e texto alternativo para compatibilidade com tecnologias assistivas.</p>
+      </div>
+      <div class="access-card reveal reveal-delay-3">
+        <span class="access-icon">📱</span>
+        <h3 data-i18n="access_4_title">Design Responsivo</h3>
+        <p data-i18n="access_4_desc">Interface fluida e adaptável a qualquer dispositivo — smartphones, tablets e desktops — sem perda de funcionalidade.</p>
+      </div>
+      <div class="access-card reveal reveal-delay-4">
+        <span class="access-icon">🔤</span>
+        <h3 data-i18n="access_5_title">Tipografia Legível</h3>
+        <p data-i18n="access_5_desc">Fontes de alta legibilidade, tamanhos adequados e espaçamento otimizado para diferentes condições visuais.</p>
+      </div>
+      <div class="access-card reveal">
+        <span class="access-icon">🌐</span>
+        <h3 data-i18n="access_6_title">Conectividade Independente</h3>
+        <p data-i18n="access_6_desc">Funciona via chip de operadora, sem necessidade de Wi-Fi — garantindo acesso em qualquer localidade do Brasil.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACTO -->
+<section id="impacto" aria-labelledby="impacto-title">
+  <div class="container">
+    <div style="text-align: center; max-width: 560px; margin: 0 auto;">
+      <span class="section-tag reveal" data-i18n="impact_tag">💚 Impacto</span>
+      <h2 class="section-title reveal" id="impacto-title" data-i18n="impact_title">Transformando vidas<br>com tecnologia</h2>
+      <p class="section-sub reveal" style="margin: 0 auto; color: rgba(255,255,255,0.6);" data-i18n="impact_sub">
+        O ALLY gera um ciclo de valor real: mais segurança, menos custos, maior autonomia e inclusão social efetiva.
+      </p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card reveal">
+        <span class="impact-icon">🛡️</span>
+        <div class="impact-num">80<span>k</span></div>
+        <div class="impact-label" data-i18n="impact_1">pessoas desaparecidas/ano que poderiam ser rapidamente localizadas com rastreamento em tempo real</div>
+      </div>
+      <div class="impact-card reveal reveal-delay-1">
+        <span class="impact-icon">💰</span>
+        <div class="impact-num">66<span>%</span></div>
+        <div class="impact-label" data-i18n="impact_2">da renda familiar comprometida com cuidados. ALLY alivia essa carga com autonomia e segurança</div>
+      </div>
+      <div class="impact-card reveal reveal-delay-2">
+        <span class="impact-icon">🌍</span>
+        <div class="impact-num">$36<span>B</span></div>
+        <div class="impact-label" data-i18n="impact_3">projeção do mercado global de tecnologia assistiva até 2033 (CAGR 4,8%)</div>
+      </div>
+      <div class="impact-card reveal reveal-delay-3">
+        <span class="impact-icon">👨‍👩‍👧</span>
+        <div class="impact-num">14<span>.4M</span></div>
+        <div class="impact-label" data-i18n="impact_4">pessoas com deficiência no Brasil — um mercado e uma responsabilidade social gigantescos</div>
+      </div>
+      <div class="impact-card reveal reveal-delay-4">
+        <span class="impact-icon">⚡</span>
+        <div class="impact-num">R$150</div>
+        <div class="impact-label" data-i18n="impact_5">custo estimado por unidade, tornando a tecnologia acessível para famílias de todas as classes</div>
+      </div>
+      <div class="impact-card reveal">
+        <span class="impact-icon">🤝</span>
+        <div class="impact-num">3x</div>
+        <div class="impact-label" data-i18n="impact_6">mais autonomia e mobilidade relatada por famílias que utilizam tecnologia de rastreamento</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARCERIAS -->
+<section id="parcerias" aria-labelledby="parcerias-title">
+  <div class="container">
+    <div style="text-align: center; max-width: 520px; margin: 0 auto;">
+      <span class="section-tag reveal" data-i18n="partners_tag">🤝 Ecossistema</span>
+      <h2 class="section-title reveal" id="parcerias-title" data-i18n="partners_title">Parcerias<br>estratégicas</h2>
+      <p class="section-sub reveal" style="margin: 0 auto;" data-i18n="partners_sub">
+        O ALLY cresce com um ecossistema de parceiros comprometidos com inclusão, saúde e inovação social.
+      </p>
+    </div>
+    <div class="partners-grid">
+      <div class="partner-card reveal">
+        <span class="partner-icon">🏫</span>
+        <h3>Universidades</h3>
+        <p>Pesquisa, validação científica e desenvolvimento conjunto de tecnologias assistivas</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-1">
+        <span class="partner-icon">🏥</span>
+        <h3>Saúde</h3>
+        <p>Hospitais, clínicas e profissionais de saúde como canais de distribuição e validação</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-2">
+        <span class="partner-icon">💙</span>
+        <h3>ONGs & APAE</h3>
+        <p>Entidades como APAE e associações de Alzheimer para testes piloto e acesso às famílias</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-3">
+        <span class="partner-icon">🏛️</span>
+        <h3>Órgãos Públicos</h3>
+        <p>ECA, prefeituras e secretarias para integração com sistemas públicos de segurança</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-4">
+        <span class="partner-icon">📶</span>
+        <h3>Operadoras</h3>
+        <p>Vivo, Claro e TIM para planos M2M otimizados e conectividade nacional de baixo custo</p>
+      </div>
+      <div class="partner-card reveal">
+        <span class="partner-icon">💼</span>
+        <h3>Seguradoras</h3>
+        <p>Planos de saúde e seguradoras para modelos de assinatura e cobertura institucional</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-1">
+        <span class="partner-icon">☁️</span>
+        <h3>Big Tech</h3>
+        <p>AWS, Google Cloud e Azure para infraestrutura escalável e APIs de mapeamento</p>
+      </div>
+      <div class="partner-card reveal reveal-delay-2">
+        <span class="partner-icon">⚖️</span>
+        <h3>Regulatório</h3>
+        <p>ANATEL para certificação e conformidade regulatória do dispositivo físico</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato" aria-labelledby="contato-title">
+  <div class="container">
+    <span class="section-tag reveal" data-i18n="contato_tag">✉️ Contato</span>
+    <h2 class="section-title reveal" id="contato-title" data-i18n="contato_title">Vamos construir<br>juntos</h2>
+    <div class="contact-wrap">
+      <div class="contact-info reveal">
+        <h3 data-i18n="contato_info_title">Seja parte do ALLY</h3>
+        <p data-i18n="contato_info_desc">
+          Seja você um investidor, parceiro institucional, profissional de saúde ou simplesmente alguém que acredita na tecnologia a serviço da inclusão — queremos conversar com você.
+        </p>
+        <div class="contact-points">
+          <div class="contact-point">
+            <span class="contact-point-icon">📍</span>
+            <div>
+              <div class="contact-point-text">Lauro de Freitas, Bahia</div>
+              <div class="contact-point-sub">Brasil</div>
+            </div>
+          </div>
+          <div class="contact-point">
+            <span class="contact-point-icon">📧</span>
+            <div>
+              <div class="contact-point-text">contato@ally.com.br</div>
+              <div class="contact-point-sub">Respondemos em até 48h</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="contact-name" data-i18n="form_name">Nome completo</label>
+            <input type="text" id="contact-name" name="name" placeholder="Seu nome" required aria-required="true" data-i18n="form_name">
+          </div>
+          <div class="form-group">
+            <label for="contact-email" data-i18n="form_email">E-mail</label>
+            <input type="email" id="contact-email" name="email" placeholder="seu@email.com" required aria-required="true" data-i18n="form_email">
+          </div>
+          <div class="form-group">
+            <label for="contact-msg" data-i18n="form_msg">Mensagem</label>
+            <textarea id="contact-msg" name="message" placeholder="Como podemos colaborar?" required aria-required="true" data-i18n="form_msg"></textarea>
+          </div>
+          <button type="submit" class="form-submit">
+            <span data-i18n="form_submit">✈️ Enviar Mensagem</span>
+          </button>
+          <div class="form-msg" id="form-msg" role="alert" aria-live="polite" data-i18n="form_success">
+            ✅ Mensagem enviada! Entraremos em contato em breve.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">ALLY</span>
+        <p class="footer-desc" data-i18n="footer_desc">
+          Tornando a tecnologia um instrumento de empatia, segurança e inclusão. Para cada pessoa, para cada família.
+        </p>
+        <div class="footer-socials" aria-label="Redes sociais do ALLY">
+          <div class="social-btn" role="img" aria-label="Instagram do ALLY" title="Instagram">📸</div>
+          <div class="social-btn" role="img" aria-label="LinkedIn do ALLY" title="LinkedIn">💼</div>
+          <div class="social-btn" role="img" aria-label="Twitter do ALLY" title="Twitter">🐦</div>
+          <div class="social-btn" role="img" aria-label="YouTube do ALLY" title="YouTube">▶️</div>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Links do produto">
+        <h4>Produto</h4>
+        <ul>
+          <li><a href="#funciona" data-i18n="nav_funciona">Como Funciona</a></li>
+          <li><a href="#status">Sistema de Cores</a></li>
+          <li><a href="#simulador" data-i18n="nav_simulador">Simulador</a></li>
+          <li><a href="#acessibilidade">Acessibilidade</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Links do projeto">
+        <h4>Projeto</h4>
+        <ul>
+          <li><a href="#sobre" data-i18n="nav_sobre">O Problema</a></li>
+          <li><a href="#impacto" data-i18n="nav_impacto">Impacto Social</a></li>
+          <li><a href="#parcerias" data-i18n="nav_parcerias">Parcerias</a></li>
+          <li><a href="#contato" data-i18n="nav_contato">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacidade & LGPD</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Política de Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_rights">© 2025 ALLY. Todos os direitos reservados.</p>
+      <p class="footer-tagline" data-i18n="footer_tagline">"Tecnologia com empatia, segurança with inclusão."</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
